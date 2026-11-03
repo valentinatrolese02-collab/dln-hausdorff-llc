@@ -30,6 +30,7 @@ package = false
 
 [tool.pytest.ini_options]
 pythonpath = ["src", "scripts"]
+markers = ["slow: the smoke run end to end, a few minutes on CPU"]
 
 [dependency-groups]
 dev = [

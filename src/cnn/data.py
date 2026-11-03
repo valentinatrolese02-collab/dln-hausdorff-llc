@@ -9,7 +9,9 @@ CIFAR_STD = (0.2023, 0.1994, 0.2010)
 
 
 def default_device():
-    return "cuda" if torch.cuda.is_available() else "cpu"
+    if torch.cuda.is_available():
+        return "cuda"
+    return "mps" if torch.backends.mps.is_available() else "cpu"
 
 
 def normalise(images):

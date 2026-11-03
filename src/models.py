@@ -3,7 +3,11 @@ import torch.nn as nn
 
 # VGG family vendored from Simsekli et al. 2020, src/models.py (MIT licence):
 # https://github.com/umutsimsekli/Hausdorff-Dimension-and-Generalization
-VGG_CFG = {"VGG4": [512, "M"], "VGG6": [256, "M", 512, "M", 512, "M"]}
+VGG_CFG = {
+    "VGG4": [512, "M"], 
+    "VGG6": [256, "M", 512, "M", 512, "M"],
+    'VGG16': [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512, 'M', 512, 512, 512, 'M'],
+}
 
 # filter_nums in original code
 VGG_CLASSIFIER_INPUT = {"VGG4": 131072, "VGG6": 8192}

@@ -1,0 +1,19 @@
+# configs/sweep.yaml cut down to fit one night on an M1 Pro: 1 seed instead of 3, 6 checkpoints instead of 12, no batch size 512.
+# Pair with calibrate_sgld.py --batch-size 256. See "Overnight run" in the README.
+arch: VGG4
+steps: 15000
+seeds: [0]
+log_every: 250
+num_checkpoints: 6
+window: 361
+ms: [2, 3, 6, 9, 18, 36]
+num_projections: 10
+subset: null
+baseline:
+  lr: 0.01
+  batch_size: 128
+  momentum: 0.0
+factors:
+  lr: [0.001, 0.003, 0.01]
+  batch_size: [32, 64, 128, 256]
+  momentum: [0.0, 0.5, 0.9]

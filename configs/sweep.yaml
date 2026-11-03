@@ -1,14 +1,42 @@
-arch: VGG4
-epochs: 50
+arch: VGG4  # or VGG6
+steps: 15000  # SGD steps, as AW: batch-size runs therefore see different numbers of epochs
 seeds: [0, 1, 2]
+log_every: 250  # cheap metrics: test accuracy, test loss, training loss
+num_checkpoints: 12  # LLC and tail index, evenly spaced over the run
+window: 361  # N + 1 iterates in the rolling buffer, the same for every batch size. Every m in ms must divide N.
+ms: [2, 3, 6, 9, 18, 36]
+num_projections: 10
+subset: null  # null is all images
 baseline:
   lr: 0.01
   batch_size: 128
   momentum: 0.0
-  l2: 0.0
-# One factor at a time around the baseline. Distinct configs share the baseline runs.
+# One factor at a time around the baseline. The baseline run is shared between the sweeps.
 factors:
   lr: [0.001, 0.003, 0.01]
-  batch_size: [32, 64, 128, 256]
+  batch_size: [32, 64, 128, 256, 512]
   momentum: [0.0, 0.5, 0.9]
-  l2: [0.0, 1.0e-4, 5.0e-4]
+
+# --smoke replaces the values above with these. 300 steps cannot fill a window of 361, hence 181 (N = 180).
+smoke:
+  subset: 2000
+  steps: 300
+  log_every: 50
+  num_checkpoints: 3
+  window: 181
+  seeds: [0]
+  baseline:
+    lr: 0.01
+    batch_size: 32
+    momentum: 0.0
+  factors:
+    lr: [0.003, 0.01]
+    batch_size: [16, 32]
+    momentum: [0.0, 0.5]
+  sgld:
+    lr: 1.0e-6
+    localization: 1.0
+    num_steps: 20
+    burn_in: 0.9
+    num_chains: 2
+    batch_size: 64
